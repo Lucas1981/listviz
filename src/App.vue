@@ -1,29 +1,46 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div class="root" id="app">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <h1>List viz</h1>
+    </nav>
+
+    <div class="container">
+      <div class="my-3">
+        <file-menu />
+      </div>
+
+      <div v-if="loading">
+      </div>
+      <div v-else>
+        <div id="nav">
+          <ul class="nav nav-tabs mb-3">
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ 'active': activeLink === '/' }" to="/">List</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ 'active': activeLink === '/viz' }" to="/viz">Viz</router-link>
+            </li>
+          </ul>
+        </div>
+        <router-view/>
+      </div>
     </div>
-    <router-view/>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import FileMenu from '@/components/FileMenu.vue';
+
+@Component({
+  components: {
+    FileMenu
+  }
+})
+export default class App extends Vue {
+  public get loading() { return this.$store.getters.loading; }
+  public get activeLink() {
+    return this.$route.path;
   }
 }
-</style>
+</script>
